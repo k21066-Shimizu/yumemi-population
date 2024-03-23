@@ -1,12 +1,4 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.inner {
-  width: 100%;
-  max-width: var(--content-width);
-  margin: 0 1em;
+  margin: 0 max(0em, (100vw - var(--content-width)) / 2);
+  padding: 1em;
 }

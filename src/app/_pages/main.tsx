@@ -15,10 +15,8 @@ export default function Main(props: Props) {
 
   return (
     <main className={styles.main}>
-      <div className={styles.inner}>
-        <PrefecturesSelector prefectures={prefectures} setSelectedPrefCodes={setSelectedPrefCodes} />
-        <div>{selectedPrefCodes.toString()}</div>
-      </div>
+      <PrefecturesSelector prefectures={prefectures} setSelectedPrefCodes={setSelectedPrefCodes} />
+      <div>{selectedPrefCodes.toString()}</div>
     </main>
   );
 }
