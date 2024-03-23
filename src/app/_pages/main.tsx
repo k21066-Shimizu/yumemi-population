@@ -1,6 +1,6 @@
 'use client';
 
-import type { Prefectures } from '@/types/rasas';
+import type { Prefectures } from '@/types/resas';
 import PrefecturesSelector from './prefecturesSelector';
 import styles from './main.module.css';
 import { useState } from 'react';

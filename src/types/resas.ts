@@ -1,9 +1,9 @@
-export type FetchRasasApi = {
-  (path: 'api/v1/prefectures'): Promise<Rasas<Prefectures>>;
+export type FetchResasApi = {
+  (path: 'api/v1/prefectures'): Promise<Resas<Prefectures>>;
   (path: string): Promise<unknown>;
 };
 
-export type Rasas<T> = {
+export type Resas<T> = {
   message: null;
   result: T;
 };

@@ -1,14 +1,14 @@
 import 'server-only';
 
-import { FetchRasasApi } from '@/types/rasas';
+import { FetchResasApi } from '@/types/resas';
 
 const ENDPOINT = 'https://opendata.resas-portal.go.jp/';
 
-export const fetchRasasApi: FetchRasasApi = async (path) => {
+export const fetchResasApi: FetchResasApi = async (path) => {
   const response = await fetch(new URL(path, ENDPOINT), {
     headers: {
       'Content-Type': 'application/json',
-      'X-API-KEY': process.env.RASAS_API_KEY!,
+      'X-API-KEY': process.env.RESAS_API_KEY!,
     },
   });
   return response.json();

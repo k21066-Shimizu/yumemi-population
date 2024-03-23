@@ -1,6 +1,6 @@
 'use client';
 
-import type { Prefectures } from '@/types/rasas';
+import type { Prefectures } from '@/types/resas';
 import type { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
 
