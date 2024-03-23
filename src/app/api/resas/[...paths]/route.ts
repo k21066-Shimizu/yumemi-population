@@ -1,10 +1,10 @@
 import { fetchResasApi } from '@/foundations/resasApi';
 
-const API_ENDPOINT = 'https://opendata.resas-portal.go.jp/api/';
-
 export async function GET(request: Request, { params }: { params: { paths: string[] } }) {
-  const path = params.paths.join('/');
-  const result = await fetchResasApi(path);
+  const { paths } = params;
+  const { searchParams } = new URL(request.url);
+  const path = paths.join('/');
+  const result = await fetchResasApi(path, Object.fromEntries(searchParams));
 
   return Response.json(result);
 }
