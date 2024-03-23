@@ -4,5 +4,5 @@ import Main from './_pages/main';
 export default async function Home() {
   const data = await fetchRasasApi('api/v1/prefectures');
 
-  return <Main data={data.result} />;
+  return <Main prefectures={data.result} />;
 }
