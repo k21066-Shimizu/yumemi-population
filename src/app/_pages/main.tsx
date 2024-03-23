@@ -4,6 +4,7 @@ import type { Prefectures } from '@/types/rasas';
 import PrefecturesSelector from './prefecturesSelector';
 import styles from './main.module.css';
 import { useState } from 'react';
+import MainCharts from './mainCharts';
 
 type Props = {
   prefectures: Prefectures;
@@ -16,7 +17,7 @@ export default function Main(props: Props) {
   return (
     <main className={styles.main}>
       <PrefecturesSelector prefectures={prefectures} setSelectedPrefCodes={setSelectedPrefCodes} />
-      <div>{selectedPrefCodes.toString()}</div>
+      <MainCharts selectedPrefCodes={selectedPrefCodes} />
     </main>
   );
 }
