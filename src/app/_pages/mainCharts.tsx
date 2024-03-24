@@ -1,52 +1,34 @@
-import { Resas, PopulationComposition } from '@/types/resas';
+import type { Prefecture } from '@/types/resas';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import usePrefPopulations from '../_hooks/usePrefPopulations';
 
 type Props = {
-  selectedPrefCodes: number[];
+  selectedPrefectures: Prefecture[];
 };
-
-type PopulationData = {
-  prefCode: number;
-  composition: Resas<PopulationComposition>;
-};
-const cache = new Map<number, Promise<PopulationData>>();
 
 export default function MainCharts(props: Props) {
-  const { selectedPrefCodes } = props;
+  const { selectedPrefectures } = props;
   const [labelMode] = useState('総人口');
-  const [series, setSeries] = useState<Highcharts.SeriesOptionsType[]>([]);
+  const prefPopulations = usePrefPopulations(selectedPrefectures);
 
-  useEffect(() => {
-    (async () => {
-      const fetchers = selectedPrefCodes.map((prefCode) => {
-        if (cache.has(prefCode)) return cache.get(prefCode)!;
-        const dataPromise = fetch(`/api/resas/api/v1/population/composition/perYear?prefCode=${prefCode}&cityCode=-`)
-          .then((res): Promise<Resas<PopulationComposition>> => res.json())
-          .then((composition) => ({ prefCode, composition }));
-        cache.set(prefCode, dataPromise);
-        return dataPromise;
-      });
-
-      const results = await Promise.all(fetchers);
-      const series = results.flatMap((data): Highcharts.SeriesOptionsType[] => {
-        const targetData = data.composition.result.data.find((v) => v.label === labelMode);
-        return targetData
-          ? [
-              {
-                type: 'line',
-                name: data.prefCode.toString(),
-                data: targetData.data.map((d) => [d.year, d.value]),
-                zoneAxis: 'x',
-                zones: [{ value: data.composition.result.boundaryYear }, { dashStyle: 'Dot' }],
-              },
-            ]
-          : [];
-      });
-      setSeries(series);
-    })();
-  }, [labelMode, selectedPrefCodes]);
+  const series: Highcharts.SeriesOptionsType[] = useMemo(
+    () =>
+      prefPopulations.flatMap(
+        ({ pref, populations }) =>
+          populations?.data
+            .filter((v) => v.label === labelMode)
+            .map((targetData) => ({
+              type: 'line',
+              name: pref.prefName,
+              data: targetData.data.map((d) => [d.year, d.value]),
+              zoneAxis: 'x',
+              zones: [{ value: populations.boundaryYear }, { dashStyle: 'Dot' }],
+            })) ?? []
+      ),
+    [labelMode, prefPopulations]
+  );
 
   const options: Highcharts.Options = {
     title: { text: labelMode },

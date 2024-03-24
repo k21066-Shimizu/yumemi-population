@@ -1,5 +1,5 @@
 export type FetchResasApi = {
-  (path: 'api/v1/prefectures', params?: undefined): Promise<Resas<Prefectures>>;
+  (path: 'api/v1/prefectures', params?: undefined): Promise<Resas<Prefecture[]>>;
   (path: 'api/v1/poplation/composition/perYear', params: PopulationCompositionParams): Promise<
     Resas<PopulationComposition>
   >;
@@ -11,10 +11,10 @@ export type Resas<T> = {
   result: T;
 };
 
-export type Prefectures = {
+export type Prefecture = {
   prefCode: number;
   prefName: string;
-}[];
+};
 
 export type PopulationCompositionParams = {
   prefCode: number;

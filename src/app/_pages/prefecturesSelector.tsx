@@ -1,34 +1,35 @@
 'use client';
 
-import type { Prefectures } from '@/types/resas';
+import type { Prefecture } from '@/types/resas';
 import type { ChangeEventHandler, Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
 
 type Props = {
-  prefectures: Prefectures;
-  setSelectedPrefCodes: Dispatch<SetStateAction<number[]>>;
+  prefectures: Prefecture[];
+  setSelectedPrefectures: Dispatch<SetStateAction<Prefecture[]>>;
 };
 
 export default function PrefecturesSelector(props: Props) {
-  const { prefectures, setSelectedPrefCodes } = props;
+  const { prefectures, setSelectedPrefectures } = props;
+  const prefecturesMap = Object.fromEntries(prefectures.map((pref) => [pref.prefCode, pref]));
 
   const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
       const prefCode = Number(e.target.value);
       const isChecked = e.target.checked;
 
-      setSelectedPrefCodes((prev) => {
-        const filterd = prev.filter((code) => code !== prefCode);
-        if (isChecked) filterd.push(prefCode);
+      setSelectedPrefectures((prev) => {
+        const filterd = prev.filter((pref) => pref.prefCode !== prefCode);
+        if (isChecked) filterd.push(prefecturesMap[prefCode]);
         return filterd;
       });
     },
-    [setSelectedPrefCodes]
+    [prefecturesMap, setSelectedPrefectures]
   );
 
   return (
     <section>
-      {prefectures.map(({ prefCode, prefName }) => (
+      {prefectures.map(({ prefCode, prefName }, i) => (
         <label key={prefCode}>
           <input type="checkbox" onChange={onChange} value={prefCode} />
           {prefName}
